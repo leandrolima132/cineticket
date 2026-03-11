@@ -1,3 +1,4 @@
+import 'package:cineticket/core/router/routes.dart';
 import 'package:cineticket/modules/movies/movies_bloc.dart';
 import 'package:cineticket/modules/movies/movies_event.dart';
 import 'package:cineticket/modules/movies/movies_state.dart';
@@ -116,14 +117,15 @@ class _MoviesPageState extends State<MoviesPage> {
             }
 
             return MoviesListContent(
-                movies: movies,
-                onRefresh: () =>
-                    context.read<MoviesBloc>().add(const LoadMoviesEvent()),
-                onMovieTap: (context, movie) => {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Filme selecionado')),
-                      )
-                    });
+              movies: movies,
+              onRefresh: () =>
+                  context.read<MoviesBloc>().add(const LoadMoviesEvent()),
+              onMovieTap: (context, movie) => Navigator.pushNamed(
+                context,
+                AppRoutes.movieDetails,
+                arguments: movie.id,
+              ),
+            );
           }
 
           return Scaffold(
