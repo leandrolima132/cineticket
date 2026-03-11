@@ -1,4 +1,4 @@
-import 'package:cineticket/modules/movies/domain/entities/movie.dart';
+import 'package:cineticket/data/models/movie.dart';
 
 class MovieMock {
   static Movie get movie1 => const Movie(

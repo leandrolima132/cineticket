@@ -18,6 +18,5 @@ class Showtime extends Equatable {
   });
 
   @override
-  List<Object?> get props =>
-      [id, movieId, theater, room, dateTime, availableSeats];
+  List<Object?> get props => [id, movieId, theater, room, dateTime, availableSeats];
 }

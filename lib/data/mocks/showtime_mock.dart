@@ -1,4 +1,4 @@
-import 'package:cineticket/modules/movies/domain/entities/showtime.dart';
+import 'package:cineticket/data/models/showtime.dart';
 
 class ShowtimeMock {
   static Showtime get showtime1 => Showtime(
@@ -47,16 +47,10 @@ class ShowtimeMock {
       );
 
   static List<Showtime> get showtimesList => [
-        showtime1,
-        showtime2,
-        showtime3,
-        showtime4,
-        showtime5,
+        showtime1, showtime2, showtime3, showtime4, showtime5,
       ];
 
-  static List<Showtime> getShowtimesByMovieId(String movieId) {
-    return showtimesList
-        .where((showtime) => showtime.movieId == movieId)
-        .toList();
+  static List<Showtime> getByMovieId(String movieId) {
+    return showtimesList.where((s) => s.movieId == movieId).toList();
   }
 }
