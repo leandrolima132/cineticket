@@ -1,23 +1,18 @@
 import 'package:cineticket/core/router/routes.dart';
-import 'package:cineticket/modules/movies/movies_bloc.dart';
-import 'package:cineticket/modules/movies/movies_event.dart';
-import 'package:cineticket/modules/movies/movies_state.dart';
-import 'package:cineticket/modules/movies/widgets/movies_list_content.dart';
+import 'package:cineticket/modules/home/home_bloc.dart';
+import 'package:cineticket/modules/home/home_event.dart';
+import 'package:cineticket/modules/home/home_state.dart';
+import 'package:cineticket/modules/home/widgets/movies_list_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class MoviesPage extends StatefulWidget {
-  const MoviesPage({super.key});
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
-  @override
-  State<MoviesPage> createState() => _MoviesPageState();
-}
-
-class _MoviesPageState extends State<MoviesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<MoviesBloc, MoviesState>(
+      body: BlocBuilder<HomeBloc, HomeState>(
         buildWhen: (prev, curr) =>
             prev.movies != curr.movies ||
             prev.isLoadingList != curr.isLoadingList ||
@@ -67,9 +62,8 @@ class _MoviesPageState extends State<MoviesPage> {
                     ),
                     const SizedBox(height: 16),
                     ElevatedButton.icon(
-                      onPressed: () => context
-                          .read<MoviesBloc>()
-                          .add(const LoadMoviesEvent()),
+                      onPressed: () =>
+                          context.read<HomeBloc>().add(const LoadHomeEvent()),
                       icon: const Icon(Icons.refresh),
                       label: const Text('Tentar novamente'),
                     ),
@@ -104,8 +98,8 @@ class _MoviesPageState extends State<MoviesPage> {
                         const SizedBox(height: 24),
                         FilledButton.icon(
                           onPressed: () => context
-                              .read<MoviesBloc>()
-                              .add(const LoadMoviesEvent()),
+                              .read<HomeBloc>()
+                              .add(const LoadHomeEvent()),
                           icon: const Icon(Icons.refresh),
                           label: const Text('Atualizar'),
                         ),
@@ -119,7 +113,7 @@ class _MoviesPageState extends State<MoviesPage> {
             return MoviesListContent(
               movies: movies,
               onRefresh: () =>
-                  context.read<MoviesBloc>().add(const LoadMoviesEvent()),
+                  context.read<HomeBloc>().add(const LoadHomeEvent()),
               onMovieTap: (context, movie) => Navigator.pushNamed(
                 context,
                 AppRoutes.movieDetails,

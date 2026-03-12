@@ -3,8 +3,8 @@ import 'package:cineticket/core/theme/app_colors.dart';
 import 'package:cineticket/data/models/movie.dart';
 import 'package:cineticket/modules/cart/cart_bloc.dart';
 import 'package:cineticket/modules/cart/cart_state.dart';
-import 'package:cineticket/modules/movies/widgets/hero_section.dart';
-import 'package:cineticket/modules/movies/widgets/movie_poster_card.dart';
+import 'package:cineticket/modules/home/widgets/hero_section.dart';
+import 'package:cineticket/modules/home/widgets/movie_poster_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

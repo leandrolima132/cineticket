@@ -2,9 +2,9 @@ import 'package:cineticket/core/di/di.dart';
 import 'package:cineticket/core/router/router.dart';
 import 'package:cineticket/core/theme/app_colors.dart';
 import 'package:cineticket/modules/cart/cart_bloc.dart';
-import 'package:cineticket/modules/movies/movies_bloc.dart';
-import 'package:cineticket/modules/movies/movies_event.dart';
-import 'package:cineticket/modules/movies/movies_page.dart';
+import 'package:cineticket/modules/home/home_bloc.dart';
+import 'package:cineticket/modules/home/home_event.dart';
+import 'package:cineticket/modules/home/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -24,7 +24,7 @@ class CineTicketApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => getIt<MoviesBloc>()..add(const LoadMoviesEvent()),
+          create: (_) => getIt<HomeBloc>()..add(const LoadHomeEvent()),
         ),
         BlocProvider(create: (_) => getIt<CartBloc>()),
       ],
@@ -56,7 +56,7 @@ class CineTicketApp extends StatelessWidget {
           ),
           useMaterial3: true,
         ),
-        home: const MoviesPage(),
+        home: const HomePage(),
       ),
     );
   }

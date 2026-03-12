@@ -2,11 +2,11 @@ import 'package:cineticket/core/router/routes.dart';
 import 'package:cineticket/core/router/seat_selection_args.dart';
 import 'package:cineticket/core/theme/app_colors.dart';
 import 'package:cineticket/core/utils/utils.dart';
-import 'package:cineticket/modules/movies/movies_bloc.dart';
-import 'package:cineticket/modules/movies/movies_event.dart';
-import 'package:cineticket/modules/movies/movies_state.dart';
-import 'package:cineticket/modules/movies/widgets/hero_section.dart';
-import 'package:cineticket/modules/movies/widgets/showtime_card.dart';
+import 'package:cineticket/modules/home/widgets/hero_section.dart';
+import 'package:cineticket/modules/movie-details/movie_details_bloc.dart';
+import 'package:cineticket/modules/movie-details/movie_details_event.dart';
+import 'package:cineticket/modules/movie-details/movie_details_state.dart';
+import 'package:cineticket/modules/movie-details/widgets/showtime_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,14 +24,14 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: BlocBuilder<MoviesBloc, MoviesState>(
+      body: BlocBuilder<MovieDetailsBloc, MovieDetailsState>(
         buildWhen: (prev, curr) =>
-            prev.selectedMovie != curr.selectedMovie ||
+            prev.movie != curr.movie ||
             prev.showtimes != curr.showtimes ||
-            prev.isLoadingDetails != curr.isLoadingDetails ||
+            prev.isLoading != curr.isLoading ||
             prev.errorMessage != curr.errorMessage,
         builder: (context, state) {
-          if (state.isLoadingDetails) {
+          if (state.isLoading) {
             return Scaffold(
               appBar: AppBar(title: const Text('Detalhes do filme')),
               body: const Center(
@@ -77,7 +77,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                       FilledButton.icon(
                         onPressed: () {
                           context
-                              .read<MoviesBloc>()
+                              .read<MovieDetailsBloc>()
                               .add(LoadMovieDetailsEvent(widget.movieId));
                         },
                         icon: const Icon(Icons.refresh),
@@ -90,7 +90,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
             );
           }
 
-          final movie = state.selectedMovie;
+          final movie = state.movie;
           final showtimes = state.showtimes ?? [];
           if (movie != null) {
             return CustomScrollView(
