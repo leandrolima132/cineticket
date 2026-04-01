@@ -99,7 +99,6 @@ class ReceiptPage extends StatelessWidget {
               final subtotal = PaymentConstants.calculateSubtotal(
                   item.totalTickets, halfCount);
               return _buildReceiptItem(
-                context,
                 item: item,
                 fullCount: fullCount,
                 halfCount: halfCount,
@@ -156,8 +155,7 @@ class ReceiptPage extends StatelessWidget {
     );
   }
 
-  Widget _buildReceiptItem(
-    BuildContext context, {
+  Widget _buildReceiptItem({
     required CartItem item,
     required int fullCount,
     required int halfCount,

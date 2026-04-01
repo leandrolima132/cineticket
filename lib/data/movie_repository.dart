@@ -1,7 +1,7 @@
-import 'package:cineticket/data/models/movie.dart';
-import 'package:cineticket/data/models/showtime.dart';
 import 'package:cineticket/data/mocks/movie_mock.dart';
 import 'package:cineticket/data/mocks/showtime_mock.dart';
+import 'package:cineticket/data/models/movie.dart';
+import 'package:cineticket/data/models/showtime.dart';
 
 class MovieRepository {
   Future<List<Movie>> getMovies() async {
