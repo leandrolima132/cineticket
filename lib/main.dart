@@ -1,7 +1,7 @@
 import 'package:cineticket/core/di/di.dart';
 import 'package:cineticket/core/router/router.dart';
 import 'package:cineticket/core/router/routes.dart';
-import 'package:cineticket/core/theme/app_colors.dart';
+import 'package:cineticket/core/theme/app_theme.dart';
 import 'package:cineticket/modules/cart/cart_bloc.dart';
 import 'package:cineticket/modules/home/home_bloc.dart';
 import 'package:cineticket/modules/home/home_event.dart';
@@ -30,33 +30,9 @@ class CineTicketApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'CineTicket',
-        initialRoute: AppRoutes.movies,
+        initialRoute: AppRoutes.auth,
         onGenerateRoute: generateRoute,
-        theme: ThemeData(
-          brightness: Brightness.dark,
-          colorScheme: const ColorScheme.dark(
-            primary: Colors.white,
-            secondary: Colors.redAccent,
-            surface: AppColors.background,
-            error: Colors.redAccent,
-            onPrimary: Colors.black,
-            onSecondary: Colors.white,
-            onSurface: Colors.white,
-            onError: Colors.white,
-          ),
-          scaffoldBackgroundColor: AppColors.background,
-          appBarTheme: const AppBarTheme(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            centerTitle: true,
-            titleTextStyle: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          useMaterial3: true,
-        ),
+        theme: AppTheme.dark(),
       ),
     );
   }

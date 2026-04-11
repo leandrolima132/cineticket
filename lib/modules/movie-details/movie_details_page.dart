@@ -1,7 +1,7 @@
 import 'package:cineticket/core/router/routes.dart';
 import 'package:cineticket/core/router/seat_selection_args.dart';
 import 'package:cineticket/core/theme/app_colors.dart';
-import 'package:cineticket/core/utils/utils.dart';
+import 'package:cineticket/core/widgets/streaming_section_header.dart';
 import 'package:cineticket/modules/home/widgets/hero_section.dart';
 import 'package:cineticket/modules/movie-details/movie_details_bloc.dart';
 import 'package:cineticket/modules/movie-details/movie_details_event.dart';
@@ -96,10 +96,18 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
             return CustomScrollView(
               slivers: [
                 SliverAppBar(
-                  expandedHeight: 450,
+                  expandedHeight: 460,
                   pinned: true,
+                  stretch: true,
                   backgroundColor: AppColors.background,
-                  flexibleSpace: HeroSection(movie: movie),
+                  surfaceTintColor: Colors.transparent,
+                  iconTheme: const IconThemeData(color: AppColors.textPrimary),
+                  flexibleSpace: FlexibleSpaceBar(
+                    stretchModes: const [
+                      StretchMode.zoomBackground,
+                    ],
+                    background: HeroSection(movie: movie, showSynopsis: false),
+                  ),
                 ),
                 SliverToBoxAdapter(
                   child: Padding(
@@ -107,57 +115,15 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            _InfoChip(
-                                icon: Icons.star,
-                                label: movie.rating,
-                                color: Colors.amber),
-                            const SizedBox(width: 12),
-                            _InfoChip(
-                                icon: Icons.access_time,
-                                label: movie.duration,
-                                color: Colors.grey),
-                            const SizedBox(width: 12),
-                            _InfoChip(
-                              icon: Icons.calendar_today,
-                              label: formatDateToBr(movie.releaseDate),
-                              color: Colors.grey,
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
-                        Wrap(
-                          spacing: 8,
-                          runSpacing: 8,
-                          children: movie.genres.split(', ').map((genre) {
-                            return Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 6),
-                              decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: Text(
-                                genre,
-                                style: TextStyle(
-                                    color: Colors.grey[300], fontSize: 13),
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                        const SizedBox(height: 24),
                         _ExpandableSynopsis(description: movie.description),
-                        const SizedBox(height: 32),
-                        Text(
-                          'Horários de Exibição',
-                          style:
-                              Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
+                        const SizedBox(height: 28),
+                        const StreamingSectionHeader(
+                          overline: 'Ingressos',
+                          title: 'Horários de Exibição',
+                          subtitle:
+                              'Toque em uma sessão para escolher seus assentos',
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 8),
                         Column(
                           children: showtimes.isEmpty
                               ? [
@@ -250,7 +216,11 @@ class _ExpandableSynopsisState extends State<_ExpandableSynopsis> {
         const SizedBox(height: 8),
         Text(
           widget.description,
-          style: TextStyle(color: Colors.grey[300], fontSize: 15, height: 1.5),
+          style: const TextStyle(
+            color: AppColors.textSecondary,
+            fontSize: 15,
+            height: 1.55,
+          ),
           maxLines: _expanded ? null : _maxLinesCollapsed,
           overflow: _expanded ? null : TextOverflow.ellipsis,
         ),
@@ -261,8 +231,8 @@ class _ExpandableSynopsisState extends State<_ExpandableSynopsis> {
               onTap: () => setState(() => _expanded = !_expanded),
               child: Text(
                 _expanded ? 'Ver menos' : 'Ver mais',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
+                style: const TextStyle(
+                  color: AppColors.accent,
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                 ),
@@ -274,23 +244,30 @@ class _ExpandableSynopsisState extends State<_ExpandableSynopsis> {
   }
 }
 
-class _InfoChip extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final MaterialColor color;
+// class _InfoChip extends StatelessWidget {
+//   final IconData icon;
+//   final String label;
+//   final Color color;
 
-  const _InfoChip(
-      {required this.icon, required this.label, required this.color});
+//   const _InfoChip(
+//       {required this.icon, required this.label, required this.color});
 
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(icon, size: 18, color: color[400]),
-        const SizedBox(width: 6),
-        Text(label, style: TextStyle(fontSize: 14, color: Colors.grey[300])),
-      ],
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Row(
+//       mainAxisSize: MainAxisSize.min,
+//       children: [
+//         Icon(icon, size: 20, color: color),
+//         const SizedBox(width: 6),
+//         Text(
+//           label,
+//           style: const TextStyle(
+//             fontSize: 14,
+//             color: AppColors.textSecondary,
+//             fontWeight: FontWeight.w600,
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }

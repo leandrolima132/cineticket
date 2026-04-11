@@ -1,4 +1,5 @@
 abstract class AppRoutes {
+  static const String auth = '/auth';
   static const String movies = '/';
   static const String movieDetails = '/movie-details';
   static const String seatSelection = '/seat-selection';

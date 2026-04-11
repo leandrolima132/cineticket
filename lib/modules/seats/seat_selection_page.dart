@@ -39,11 +39,11 @@ class SeatSelectionPage extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  CircularProgressIndicator(color: Colors.white),
+                  CircularProgressIndicator(),
                   SizedBox(height: 16),
                   Text(
                     'Carregando assentos...',
-                    style: TextStyle(color: Colors.white70, fontSize: 16),
+                    style: TextStyle(color: AppColors.textSecondary, fontSize: 16),
                   ),
                 ],
               ),
@@ -61,8 +61,8 @@ class SeatSelectionPage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.error_outline,
-                        size: 64, color: Colors.redAccent),
+                    Icon(Icons.error_outline_rounded,
+                        size: 64, color: AppColors.accent.withOpacity(0.9)),
                     const SizedBox(height: 16),
                     Text(
                       state.errorMessage!,
@@ -74,7 +74,7 @@ class SeatSelectionPage extends StatelessWidget {
                       onPressed: () => context.read<SeatsBloc>().add(
                             LoadSeatsEvent(showtime.id),
                           ),
-                      icon: const Icon(Icons.refresh),
+                      icon: const Icon(Icons.refresh_rounded),
                       label: const Text('Tentar novamente'),
                     ),
                   ],
@@ -86,37 +86,103 @@ class SeatSelectionPage extends StatelessWidget {
 
         return Scaffold(
           backgroundColor: AppColors.background,
-          appBar: AppBar(title: const Text('Escolha seus assentos')),
+          appBar: AppBar(
+            title: const Text('Escolha seus assentos'),
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(1),
+              child: Container(
+                height: 1,
+                color: AppColors.outline.withOpacity(0.35),
+              ),
+            ),
+          ),
           body: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.08),
-                    borderRadius: BorderRadius.circular(12),
+                    gradient: LinearGradient(
+                      colors: [
+                        AppColors.surfaceElevated.withOpacity(0.95),
+                        AppColors.surface.withOpacity(0.7),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: AppColors.outline.withOpacity(0.45),
+                    ),
                   ),
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(Icons.movie, color: Colors.redAccent[400]),
-                      const SizedBox(width: 12),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.network(
+                          movie.posterUrl,
+                          width: 52,
+                          height: 78,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => Container(
+                            width: 52,
+                            height: 78,
+                            color: AppColors.surface,
+                            child: const Icon(Icons.movie_rounded,
+                                color: AppColors.textMuted),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 14),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              showtime.theater,
+                              movie.title,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.textPrimary,
                               ),
                             ),
+                            const SizedBox(height: 6),
                             Text(
-                              '${showtime.room} • ${dateFormat.format(showtime.dateTime)} ${timeFormat.format(showtime.dateTime)}',
-                              style: TextStyle(
-                                  fontSize: 14, color: Colors.grey[400]),
+                              showtime.theater,
+                              style: const TextStyle(
+                                fontSize: 13,
+                                color: AppColors.textSecondary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Row(
+                              children: [
+                                Icon(Icons.meeting_room_rounded,
+                                    size: 15, color: AppColors.textMuted),
+                                const SizedBox(width: 4),
+                                Text(
+                                  showtime.room,
+                                  style: const TextStyle(
+                                    fontSize: 13,
+                                    color: AppColors.textMuted,
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Icon(Icons.schedule_rounded,
+                                    size: 15, color: AppColors.spotlightSoft),
+                                const SizedBox(width: 4),
+                                Text(
+                                  '${dateFormat.format(showtime.dateTime)} · ${timeFormat.format(showtime.dateTime)}',
+                                  style: const TextStyle(
+                                    fontSize: 13,
+                                    color: AppColors.spotlightSoft,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -135,30 +201,63 @@ class SeatSelectionPage extends StatelessWidget {
               ),
               const Legend(),
               Container(
-                padding: const EdgeInsets.all(20),
-                decoration:
-                    BoxDecoration(color: Colors.white.withOpacity(0.05)),
+                padding: const EdgeInsets.fromLTRB(16, 14, 16, 8),
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  border: Border(
+                    top: BorderSide(color: AppColors.outline.withOpacity(0.4)),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.voidBlack.withOpacity(0.45),
+                      blurRadius: 24,
+                      offset: const Offset(0, -8),
+                    ),
+                  ],
+                ),
                 child: SafeArea(
+                  top: false,
                   child: Row(
                     children: [
                       Expanded(
-                        child: Text(
-                          state.selectedSeats.isEmpty
-                              ? 'Selecione seus assentos'
-                              : '${state.selectedSeats.length} assento(s) selecionado(s)',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.grey[300],
-                          ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              state.selectedSeats.isEmpty
+                                  ? 'Selecione seus assentos'
+                                  : '${state.selectedSeats.length} assento(s) selecionado(s)',
+                              style: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.textPrimary,
+                              ),
+                            ),
+                            if (state.selectedSeats.isNotEmpty)
+                              Padding(
+                                padding: const EdgeInsets.only(top: 4),
+                                child: Text(
+                                  'Pinça com dois dedos para ampliar o mapa',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: AppColors.textMuted.withOpacity(0.9),
+                                  ),
+                                ),
+                              ),
+                          ],
                         ),
                       ),
+                      const SizedBox(width: 12),
                       FilledButton.icon(
                         onPressed: () {
                           if (state.selectedSeats.isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content:
-                                    Text('Selecione pelo menos um assento'),
+                              SnackBar(
+                                content: const Text(
+                                  'Selecione pelo menos um assento',
+                                ),
+                                behavior: SnackBarBehavior.floating,
                               ),
                             );
                           } else {
@@ -176,17 +275,14 @@ class SeatSelectionPage extends StatelessWidget {
                             );
                           }
                         },
-                        icon:
-                            const Icon(Icons.shopping_cart_checkout, size: 20),
+                        icon: const Icon(Icons.confirmation_number_outlined,
+                            size: 20),
                         label: const Text('Continuar'),
-                        style: FilledButton.styleFrom(
-                          backgroundColor: Colors.redAccent,
-                        ),
                       ),
                     ],
                   ),
                 ),
-              )
+              ),
             ],
           ),
         );

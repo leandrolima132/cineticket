@@ -1,3 +1,4 @@
+import 'package:cineticket/core/theme/app_colors.dart';
 import 'package:cineticket/core/utils/input_formatters.dart';
 import 'package:cineticket/core/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -57,23 +58,24 @@ class _PaymentFormState extends State<PaymentForm> {
             'Dados do cartão',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: AppColors.textPrimary,
                 ),
           ),
           const SizedBox(height: 16),
           TextFormField(
             controller: _nameController,
-            decoration: _buildInputDecoration('Nome no cartão'),
+            decoration: _buildInputDecoration(context, 'Nome no cartão'),
             textCapitalization: TextCapitalization.words,
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: AppColors.textPrimary),
             validator: (v) => (v == null || v.trim().isEmpty) ? 'Informe o nome' : null,
           ),
           const SizedBox(height: 16),
           TextFormField(
             controller: _cpfController,
-            decoration: _buildInputDecoration('CPF', hint: '000.000.000-00'),
+            decoration: _buildInputDecoration(context, 'CPF',
+                hint: '000.000.000-00'),
             keyboardType: TextInputType.number,
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: AppColors.textPrimary),
             inputFormatters: [CpfInputFormatter()],
             validator: (v) {
               if (v == null || v.trim().isEmpty) return 'Informe o CPF';
@@ -86,10 +88,11 @@ class _PaymentFormState extends State<PaymentForm> {
           const SizedBox(height: 16),
           TextFormField(
             controller: _cardController,
-            decoration: _buildInputDecoration('Número do cartão', hint: '0000 0000 0000 0000'),
+            decoration: _buildInputDecoration(context, 'Número do cartão',
+                hint: '0000 0000 0000 0000'),
             inputFormatters: [CardNumberInputFormatter()],
             keyboardType: TextInputType.number,
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: AppColors.textPrimary),
             validator: (v) =>
                 (v == null || v.replaceAll(' ', '').length < 16) ? 'Informe 16 dígitos' : null,
           ),
@@ -99,9 +102,10 @@ class _PaymentFormState extends State<PaymentForm> {
               Expanded(
                 child: TextFormField(
                   controller: _expiryController,
-                  decoration: _buildInputDecoration('Validade', hint: 'MM/AA'),
+                  decoration:
+                      _buildInputDecoration(context, 'Validade', hint: 'MM/AA'),
                   keyboardType: TextInputType.number,
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: AppColors.textPrimary),
                   inputFormatters: [ExpiryDateInputFormatter()],
                   validator: (v) =>
                       (v == null || !RegExp(r'^\d{2}/\d{2}$').hasMatch(v)) ? 'MM/AA' : null,
@@ -111,10 +115,10 @@ class _PaymentFormState extends State<PaymentForm> {
               Expanded(
                 child: TextFormField(
                   controller: _cvvController,
-                  decoration: _buildInputDecoration('CVV', hint: '123'),
+                  decoration: _buildInputDecoration(context, 'CVV', hint: '123'),
                   obscureText: true,
                   keyboardType: TextInputType.number,
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: AppColors.textPrimary),
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
                     LengthLimitingTextInputFormatter(3),
@@ -138,7 +142,6 @@ class _PaymentFormState extends State<PaymentForm> {
                   : const Icon(Icons.payment),
               label: Text(widget.isProcessing ? 'Processando...' : 'Pagar'),
               style: FilledButton.styleFrom(
-                backgroundColor: Colors.redAccent,
                 padding: const EdgeInsets.symmetric(vertical: 16),
               ),
             ),
@@ -148,13 +151,14 @@ class _PaymentFormState extends State<PaymentForm> {
     );
   }
 
-  InputDecoration _buildInputDecoration(String label, {String? hint}) {
+  InputDecoration _buildInputDecoration(
+    BuildContext context,
+    String label, {
+    String? hint,
+  }) {
     return InputDecoration(
       labelText: label,
       hintText: hint,
-      filled: true,
-      fillColor: Colors.white.withOpacity(0.08),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-    );
+    ).applyDefaults(Theme.of(context).inputDecorationTheme);
   }
 }

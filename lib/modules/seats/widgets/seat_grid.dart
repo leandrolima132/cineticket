@@ -1,8 +1,9 @@
+import 'package:cineticket/core/theme/app_colors.dart';
 import 'package:cineticket/data/models/seat.dart';
 import 'package:cineticket/modules/seats/widgets/seat_item.dart';
 import 'package:flutter/material.dart';
 
-const double _kInitialScale = 0.8;
+const double _kInitialScale = 0.82;
 
 class SeatGrid extends StatefulWidget {
   final List<Seat> seats;
@@ -26,8 +27,7 @@ class _SeatGridState extends State<SeatGrid> {
     super.initState();
     _transformationController = TransformationController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _transformationController.value = Matrix4.identity()
-        ..scale(_kInitialScale);
+      _transformationController.value = Matrix4.identity()..scale(_kInitialScale);
     });
   }
 
@@ -66,24 +66,41 @@ class _SeatGridState extends State<SeatGrid> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              width: MediaQuery.of(context).size.width * 1.1,
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 48),
+              width: MediaQuery.of(context).size.width * 1.08,
+              padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 40),
               decoration: BoxDecoration(
-                color: Colors.grey[800],
-                borderRadius: BorderRadius.circular(4),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    AppColors.surfaceElevated,
+                    AppColors.surface.withOpacity(0.4),
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: AppColors.outline.withOpacity(0.5),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.accent.withOpacity(0.12),
+                    blurRadius: 20,
+                    offset: const Offset(0, 6),
+                  ),
+                ],
               ),
-              child: const Text(
-                'TELA',
+              child: Text(
+                'T E L A',
                 style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey,
-                  letterSpacing: 8,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 11,
+                  color: AppColors.textMuted,
+                  letterSpacing: 12,
+                  fontWeight: FontWeight.w800,
                 ),
                 textAlign: TextAlign.center,
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 22),
             ...rows.entries.map(
               (entry) => Padding(
                 padding: const EdgeInsets.only(bottom: 8, left: 8),
@@ -94,10 +111,10 @@ class _SeatGridState extends State<SeatGrid> {
                       width: 24,
                       child: Text(
                         entry.key,
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey[400],
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.textMuted,
                         ),
                       ),
                     ),
@@ -122,25 +139,25 @@ class _SeatGridState extends State<SeatGrid> {
                       width: 24,
                       child: Text(
                         entry.key,
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey[400],
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.textMuted,
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
             ),
-            const SizedBox(height: 16),
-            const Text(
-              'FUNDO',
+            const SizedBox(height: 12),
+            Text(
+              'F R E N T E   D A   S A L A',
               style: TextStyle(
-                fontSize: 12,
-                color: Colors.grey,
-                letterSpacing: 8,
-                fontWeight: FontWeight.bold,
+                fontSize: 10,
+                color: AppColors.textMuted.withOpacity(0.75),
+                letterSpacing: 3,
+                fontWeight: FontWeight.w600,
               ),
             ),
             const SizedBox(height: 16),

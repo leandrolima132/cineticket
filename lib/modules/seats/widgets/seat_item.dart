@@ -1,3 +1,4 @@
+import 'package:cineticket/core/theme/app_colors.dart';
 import 'package:cineticket/data/models/seat.dart';
 import 'package:flutter/material.dart';
 
@@ -7,38 +8,56 @@ class SeatItem extends StatelessWidget {
 
   const SeatItem({super.key, required this.seat, this.onTap});
 
-  Color _getColor() {
+  Color _fillColor() {
     switch (seat.status) {
       case SeatStatus.available:
-        return Colors.green;
+        return AppColors.seatAvailable;
       case SeatStatus.selected:
-        return Colors.orange;
+        return AppColors.seatSelected;
       case SeatStatus.occupied:
-        return Colors.grey;
+        return AppColors.seatOccupied;
     }
+  }
+
+  Color _borderColor() {
+    if (seat.isAccessible) return AppColors.seatAccessible;
+    return _fillColor();
   }
 
   @override
   Widget build(BuildContext context) {
     final isTappable = seat.status != SeatStatus.occupied;
+    final fill = _fillColor();
 
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: isTappable ? onTap : null,
         borderRadius: BorderRadius.circular(8),
-        child: Container(
+        splashColor: AppColors.accent.withOpacity(0.2),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 180),
+          curve: Curves.easeOutCubic,
           width: seat.isAccessible ? 34 : 30,
           height: seat.isAccessible ? 34 : 30,
           decoration: BoxDecoration(
-            color: _getColor().withOpacity(
-              seat.status == SeatStatus.occupied ? 0.4 : 0.3,
+            color: fill.withOpacity(
+              seat.status == SeatStatus.occupied ? 0.35 : 0.28,
             ),
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: seat.isAccessible ? Colors.blue.shade300 : _getColor(),
-              width: seat.status == SeatStatus.selected ? 2 : 1,
+              color: _borderColor(),
+              width: seat.status == SeatStatus.selected ? 2.2 : 1,
             ),
+            boxShadow: seat.status == SeatStatus.selected
+                ? [
+                    BoxShadow(
+                      color: AppColors.seatSelected.withOpacity(0.45),
+                      blurRadius: 8,
+                      spreadRadius: 0,
+                    ),
+                  ]
+                : null,
           ),
           child: Stack(
             clipBehavior: Clip.none,
@@ -50,8 +69,8 @@ class SeatItem extends StatelessWidget {
                     fontSize: 10,
                     fontWeight: FontWeight.bold,
                     color: seat.status == SeatStatus.occupied
-                        ? Colors.grey[600]
-                        : Colors.white,
+                        ? AppColors.textMuted
+                        : AppColors.textPrimary,
                   ),
                 ),
               ),
@@ -60,9 +79,9 @@ class SeatItem extends StatelessWidget {
                   right: -2,
                   top: -2,
                   child: Icon(
-                    Icons.accessible,
-                    size: 10,
-                    color: Colors.blue.shade300,
+                    Icons.accessible_rounded,
+                    size: 11,
+                    color: AppColors.seatAccessible,
                   ),
                 ),
             ],

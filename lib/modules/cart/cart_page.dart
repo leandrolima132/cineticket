@@ -1,5 +1,6 @@
 import 'package:cineticket/core/router/routes.dart';
 import 'package:cineticket/core/theme/app_colors.dart';
+import 'package:cineticket/core/widgets/logout_icon_button.dart';
 import 'package:cineticket/modules/cart/cart_bloc.dart';
 import 'package:cineticket/modules/cart/cart_event.dart';
 import 'package:cineticket/modules/cart/cart_state.dart';
@@ -17,18 +18,33 @@ class CartPage extends StatelessWidget {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text('Carrinho'),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1),
+          child: Container(
+            height: 1,
+            color: AppColors.outline.withOpacity(0.35),
+          ),
+        ),
         actions: [
+          const LogoutIconButton(),
           BlocBuilder<CartBloc, CartState>(
             buildWhen: (previous, current) =>
                 previous.totalItems != current.totalItems,
             builder: (context, state) {
               if (state.isEmpty) return const SizedBox.shrink();
               return Padding(
-                padding: const EdgeInsets.only(right: 16),
+                padding: const EdgeInsets.only(right: 12),
                 child: Center(
                   child: Badge(
-                    label: Text('${state.totalItems}'),
-                    child: const Icon(Icons.shopping_cart),
+                    backgroundColor: AppColors.accent,
+                    label: Text(
+                      '${state.totalItems}',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 11,
+                      ),
+                    ),
+                    child: const Icon(Icons.confirmation_number_outlined),
                   ),
                 ),
               );
@@ -45,21 +61,24 @@ class CartPage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.shopping_cart_outlined,
-                        size: 80, color: Colors.grey[600]),
+                    Icon(Icons.local_movies_outlined,
+                        size: 80, color: AppColors.textMuted),
                     const SizedBox(height: 24),
                     Text(
                       'Seu carrinho está vazio',
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleLarge
-                          ?.copyWith(color: Colors.white70),
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            color: AppColors.textPrimary,
+                            fontWeight: FontWeight.w700,
+                          ),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 8),
                     Text(
                       'Selecione assentos em uma sessão para adicionar ingressos.',
-                      style: TextStyle(color: Colors.grey[400], fontSize: 14),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: AppColors.textMuted,
+                            fontSize: 14,
+                          ),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 32),
@@ -69,7 +88,7 @@ class CartPage extends StatelessWidget {
                         AppRoutes.movies,
                         (route) => false,
                       ),
-                      icon: const Icon(Icons.movie),
+                      icon: const Icon(Icons.movie_filter_rounded),
                       label: const Text('Ver filmes'),
                     ),
                   ],

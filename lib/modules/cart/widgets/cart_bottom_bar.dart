@@ -1,3 +1,4 @@
+import 'package:cineticket/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CartBottomBar extends StatelessWidget {
@@ -13,27 +14,56 @@ class CartBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.05),
+        color: AppColors.surface,
+        border: Border(
+          top: BorderSide(color: AppColors.outline.withOpacity(0.45)),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.voidBlack.withOpacity(0.5),
+            blurRadius: 28,
+            offset: const Offset(0, -10),
+          ),
+        ],
       ),
       child: SafeArea(
+        top: false,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              '$totalTickets ingresso(s)',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey[300]),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Total no carrinho',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.textMuted,
+                          fontSize: 12,
+                        ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    '$totalTickets ingresso(s)',
+                    style: const TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                ],
+              ),
             ),
-            SizedBox(
-              width: 200,
-              child: FilledButton.icon(
-                onPressed: onConfirm,
-                icon: const Icon(Icons.shopping_cart_checkout, size: 20),
-                label: const Text('Finalizar compra'),
-                style: FilledButton.styleFrom(
-                  backgroundColor: Colors.redAccent,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
+            FilledButton.icon(
+              onPressed: onConfirm,
+              icon: const Icon(Icons.payment_rounded, size: 20),
+              label: const Text('Finalizar compra'),
+              style: FilledButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 18,
+                  vertical: 14,
                 ),
               ),
             ),

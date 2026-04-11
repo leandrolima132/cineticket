@@ -4,6 +4,7 @@ import 'package:cineticket/core/router/routes.dart';
 import 'package:cineticket/core/router/seat_selection_args.dart';
 import 'package:cineticket/data/movie_repository.dart';
 import 'package:cineticket/data/seat_repository.dart';
+import 'package:cineticket/modules/auth/auth_page.dart';
 import 'package:cineticket/modules/cart/cart_page.dart';
 import 'package:cineticket/modules/checkout/payment_page.dart';
 import 'package:cineticket/modules/checkout/receipt_page.dart';
@@ -19,6 +20,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
+    case AppRoutes.auth:
+      return MaterialPageRoute(builder: (_) => const AuthPage());
     case AppRoutes.movies:
       return MaterialPageRoute(builder: (_) => const HomePage());
     case AppRoutes.movieDetails:

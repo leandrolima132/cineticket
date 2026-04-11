@@ -1,3 +1,4 @@
+import 'package:cineticket/core/theme/app_colors.dart';
 import 'package:cineticket/data/models/cart_item.dart';
 import 'package:cineticket/modules/checkout/constants.dart';
 import 'package:flutter/material.dart';
@@ -34,10 +35,11 @@ class OrderSummaryItem extends StatelessWidget {
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.06),
-        borderRadius: BorderRadius.circular(12),
+        color: AppColors.surfaceElevated.withOpacity(0.75),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: AppColors.outline.withOpacity(0.4)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,31 +49,31 @@ class OrderSummaryItem extends StatelessWidget {
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: AppColors.textPrimary,
             ),
           ),
           const SizedBox(height: 4),
           Text(
             '${item.showtime.theater} • ${dateFormat.format(item.showtime.dateTime)} ${timeFormat.format(item.showtime.dateTime)}',
-            style: TextStyle(fontSize: 13, color: Colors.grey[400]),
+            style: const TextStyle(fontSize: 13, color: AppColors.textSecondary),
           ),
           Text(
             'Assentos: ${item.seatsLabel}',
-            style: TextStyle(fontSize: 13, color: Colors.grey[400]),
+            style: const TextStyle(fontSize: 13, color: AppColors.textMuted),
           ),
           const SizedBox(height: 8),
           Row(
             children: [
-              Icon(Icons.school, size: 16, color: Colors.blue[300]),
+              Icon(Icons.school_rounded, size: 16, color: AppColors.spotlightSoft),
               const SizedBox(width: 6),
-              Text(
+              const Text(
                 'Meia (estudante):',
-                style: TextStyle(fontSize: 13, color: Colors.grey[400]),
+                style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
               ),
               const SizedBox(width: 8),
               DropdownButton<int>(
                 value: halfPriceCount.clamp(0, item.totalTickets),
-                dropdownColor: Colors.grey[900],
+                dropdownColor: AppColors.surfaceElevated,
                 underline: const SizedBox.shrink(),
                 items: List.generate(
                   item.totalTickets + 1,
@@ -81,7 +83,7 @@ class OrderSummaryItem extends StatelessWidget {
                       i == 0 ? 'Nenhum' : '$i de ${item.totalTickets}',
                       style: TextStyle(
                         fontSize: 13,
-                        color: i > 0 ? Colors.blue[200] : Colors.grey[400],
+                        color: i > 0 ? AppColors.spotlightSoft : AppColors.textMuted,
                       ),
                     ),
                   ),
@@ -94,18 +96,20 @@ class OrderSummaryItem extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                fullCount > 0 && halfPriceCount > 0
-                    ? '$fullCount inteira × ${priceFormat.format(fullPrice)} + $halfPriceCount meia × ${priceFormat.format(halfPrice)}'
-                    : '${item.totalTickets} ingresso(s) × ${priceFormat.format(fullCount > 0 ? fullPrice : halfPrice)}',
-                style: TextStyle(fontSize: 12, color: Colors.grey[500]),
+              Expanded(
+                child: Text(
+                  fullCount > 0 && halfPriceCount > 0
+                      ? '$fullCount inteira × ${priceFormat.format(fullPrice)} + $halfPriceCount meia × ${priceFormat.format(halfPrice)}'
+                      : '${item.totalTickets} ingresso(s) × ${priceFormat.format(fullCount > 0 ? fullPrice : halfPrice)}',
+                  style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
+                ),
               ),
               Text(
                 priceFormat.format(subtotal),
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
-                  color: Colors.redAccent[400],
+                  color: AppColors.accent,
                 ),
               ),
             ],

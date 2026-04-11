@@ -45,20 +45,28 @@ class ReceiptPage extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: Colors.green.withOpacity(0.15),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.green.withOpacity(0.4)),
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    AppColors.success.withOpacity(0.18),
+                    AppColors.surfaceElevated.withOpacity(0.9),
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(18),
+                border: Border.all(color: AppColors.success.withOpacity(0.35)),
               ),
               child: Column(
                 children: [
-                  Icon(Icons.check_circle, color: Colors.green[400], size: 56),
+                  Icon(Icons.verified_rounded,
+                      color: AppColors.success, size: 56),
                   const SizedBox(height: 12),
                   Text(
                     'Pagamento realizado com sucesso!',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: AppColors.textPrimary,
                         ),
                   ),
                 ],
@@ -68,8 +76,9 @@ class ReceiptPage extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.06),
-                borderRadius: BorderRadius.circular(12),
+                color: AppColors.surfaceElevated.withOpacity(0.85),
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: AppColors.outline.withOpacity(0.4)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,13 +88,14 @@ class ReceiptPage extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: AppColors.textPrimary,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     'Data: ${dateFormat.format(DateTime.now())}',
-                    style: TextStyle(fontSize: 13, color: Colors.grey[400]),
+                    style: const TextStyle(
+                        fontSize: 13, color: AppColors.textMuted),
                   ),
                 ],
               ),
@@ -108,7 +118,7 @@ class ReceiptPage extends StatelessWidget {
                 sessionDateFormat: sessionDateFormat,
               );
             }),
-            const Divider(color: Colors.grey, height: 32),
+            Divider(color: AppColors.outline.withOpacity(0.5), height: 32),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -116,15 +126,15 @@ class ReceiptPage extends StatelessWidget {
                   'Total pago',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: AppColors.textPrimary,
                       ),
                 ),
                 Text(
                   priceFormat.format(total),
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Colors.redAccent[400],
+                    color: AppColors.spotlightSoft,
                   ),
                 ),
               ],
@@ -141,10 +151,9 @@ class ReceiptPage extends StatelessWidget {
                     (route) => false,
                   );
                 },
-                icon: const Icon(Icons.home),
+                icon: const Icon(Icons.home_rounded),
                 label: const Text('Voltar ao início'),
                 style: FilledButton.styleFrom(
-                  backgroundColor: Colors.redAccent,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
               ),
@@ -168,8 +177,9 @@ class ReceiptPage extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.06),
-        borderRadius: BorderRadius.circular(12),
+        color: AppColors.surfaceElevated.withOpacity(0.72),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: AppColors.outline.withOpacity(0.35)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -179,24 +189,24 @@ class ReceiptPage extends StatelessWidget {
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: AppColors.textPrimary,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             '${item.showtime.theater} • Sala ${item.showtime.room}',
-            style: TextStyle(fontSize: 13, color: Colors.grey[400]),
+            style: const TextStyle(fontSize: 13, color: AppColors.textSecondary),
           ),
           Text(
             '${sessionDateFormat.format(item.showtime.dateTime)} às ${timeFormat.format(item.showtime.dateTime)}',
-            style: TextStyle(fontSize: 13, color: Colors.grey[400]),
+            style: const TextStyle(fontSize: 13, color: AppColors.textMuted),
           ),
           const SizedBox(height: 6),
           Text(
             'Assentos: ${item.seatsLabel}',
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 14,
-              color: Colors.grey[300],
+              color: AppColors.textSecondary,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -204,12 +214,12 @@ class ReceiptPage extends StatelessWidget {
           if (fullCount > 0 && halfCount > 0)
             Text(
               '$fullCount inteira × ${priceFormat.format(PaymentConstants.fullPrice)} + $halfCount meia × ${priceFormat.format(PaymentConstants.halfPrice)}',
-              style: TextStyle(fontSize: 12, color: Colors.grey[500]),
+              style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
             )
           else
             Text(
               '${item.totalTickets} ingresso(s) × ${priceFormat.format(fullCount > 0 ? PaymentConstants.fullPrice : PaymentConstants.halfPrice)}',
-              style: TextStyle(fontSize: 12, color: Colors.grey[500]),
+              style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
             ),
           const SizedBox(height: 8),
           Row(
@@ -217,10 +227,10 @@ class ReceiptPage extends StatelessWidget {
             children: [
               Text(
                 priceFormat.format(subtotal),
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: Colors.redAccent[400],
+                  color: AppColors.accent,
                 ),
               ),
             ],

@@ -1,3 +1,4 @@
+import 'package:cineticket/core/theme/app_colors.dart';
 import 'package:cineticket/data/models/cart_item.dart';
 import 'package:cineticket/modules/checkout/constants.dart';
 import 'package:cineticket/modules/checkout/widgets/order_summary_item.dart';
@@ -24,7 +25,7 @@ class OrderSummarySection extends StatelessWidget {
           'Resumo do pedido',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: AppColors.textPrimary,
               ),
         ),
         const SizedBox(height: 12),
@@ -39,7 +40,7 @@ class OrderSummarySection extends StatelessWidget {
             onHalfPriceChanged: (count) => onHalfPriceChanged(index, count),
           );
         }),
-        const Divider(color: Colors.grey),
+        Divider(color: AppColors.outline.withOpacity(0.5)),
       ],
     );
   }

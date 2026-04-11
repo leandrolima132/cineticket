@@ -1,5 +1,7 @@
 import 'package:cineticket/core/router/routes.dart';
 import 'package:cineticket/core/theme/app_colors.dart';
+import 'package:cineticket/core/widgets/logout_icon_button.dart';
+import 'package:cineticket/core/widgets/streaming_section_header.dart';
 import 'package:cineticket/data/models/movie.dart';
 import 'package:cineticket/modules/cart/cart_bloc.dart';
 import 'package:cineticket/modules/cart/cart_state.dart';
@@ -29,55 +31,80 @@ class MoviesListContent extends StatelessWidget {
 
     return RefreshIndicator(
       onRefresh: () async => onRefresh(),
-      color: Colors.white,
+      color: AppColors.accent,
+      backgroundColor: AppColors.surfaceElevated,
+      displacement: 48,
       child: CustomScrollView(
+        physics: const AlwaysScrollableScrollPhysics(
+          parent: BouncingScrollPhysics(),
+        ),
         slivers: [
           SliverAppBar(
-            expandedHeight: 420,
+            expandedHeight: 440,
             pinned: true,
+            stretch: true,
             backgroundColor: AppColors.background,
+            surfaceTintColor: Colors.transparent,
             actions: [
+              const LogoutIconButton(),
               BlocBuilder<CartBloc, CartState>(
                 buildWhen: (p, c) => p.totalItems != c.totalItems,
                 builder: (context, state) {
-                  return IconButton(
-                    icon: state.isEmpty
-                        ? const Icon(Icons.shopping_cart_outlined)
-                        : Badge(
-                            label: Text('${state.totalItems}'),
-                            child: const Icon(Icons.shopping_cart),
-                          ),
-                    onPressed: () =>
-                        Navigator.pushNamed(context, AppRoutes.cart),
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 4),
+                    child: IconButton(
+                      style: IconButton.styleFrom(
+                        foregroundColor: AppColors.textPrimary,
+                        backgroundColor:
+                            AppColors.surfaceElevated.withOpacity(0.55),
+                      ),
+                      icon: state.isEmpty
+                          ? const Icon(Icons.shopping_bag_outlined)
+                          : Badge(
+                              backgroundColor: AppColors.accent,
+                              label: Text(
+                                '${state.totalItems}',
+                                style: const TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              child: const Icon(
+                                  Icons.confirmation_number_outlined),
+                            ),
+                      onPressed: () =>
+                          Navigator.pushNamed(context, AppRoutes.cart),
+                    ),
                   );
                 },
               ),
             ],
             flexibleSpace: FlexibleSpaceBar(
+              stretchModes: const [
+                StretchMode.zoomBackground,
+              ],
               background: HeroSection(
                 movie: featured,
                 onTap: () => onMovieTap(context, featured),
               ),
             ),
           ),
-          SliverToBoxAdapter(
+          const SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
-              child: Text(
-                'Em Cartaz',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 22,
-                    ),
+              padding: EdgeInsets.fromLTRB(16, 28, 16, 0),
+              child: StreamingSectionHeader(
+                overline: 'Agora no cinema',
+                title: 'Em Cartaz',
+                subtitle: 'Deslize e escolha o próximo filme',
               ),
             ),
           ),
           SliverToBoxAdapter(
             child: SizedBox(
-              height: 260,
+              height: 304,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
                 itemCount: movies.length,
                 itemBuilder: (context, index) {
                   final movie = movies[index];
@@ -89,7 +116,7 @@ class MoviesListContent extends StatelessWidget {
               ),
             ),
           ),
-          const SliverToBoxAdapter(child: SizedBox(height: 32)),
+          const SliverToBoxAdapter(child: SizedBox(height: 40)),
         ],
       ),
     );
